@@ -1,21 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TodoList from "./TodoList";
 import "./todoList.css";
+import FlipMove from "react-flip-move";
+
+const getLocalItems = () => {
+  const todos = localStorage.getItem("todos");
+  console.log("local storage todos", todos);
+
+  if(todos) {
+    return JSON.parse(localStorage.getItem("todos"))
+  } else {
+    return []
+  }
+}
 
 function TodoForm() {
   const [inputData, setInputData] = useState("");
-  const [showTodo, setShowTodo] = useState([]);
-  const [showButton, setShowButton] = useState(false);
+  const [showTodo, setShowTodo] = useState(getLocalItems());
 
   const onSubmit = (e) => {
     e.preventDefault();
-    setInputData("");
-    console.log(showTodo);
-  };
 
-  const addTodo = (e) => {
-    if (inputData === "") return null;
-    else setShowTodo([...showTodo, inputData]);
+    if (!inputData) return null;
+    else {
+      setShowTodo([...showTodo, inputData]);
+      setInputData("");
+    }
   };
 
   // function to delete todo
@@ -31,6 +41,16 @@ function TodoForm() {
     setShowTodo([]);
   };
 
+  // function to update todo
+  const updateTodo = (e) => {
+    console.log(e.target.value);
+  };
+
+  // add todos to local storage
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(showTodo));
+  }, [showTodo]);
+
   return (
     <div className="form">
       <form onSubmit={onSubmit}>
@@ -40,24 +60,21 @@ function TodoForm() {
           onChange={(e) => setInputData(e.target.value)}
           value={inputData}
         />
-        <button
-          type="submit"
-          onClick={addTodo}
-         
-        >
-          Add Todo
-        </button>
+        <button type="submit">Add Todo</button>
       </form>
 
       {/* returning filtered items */}
       <div className="todo__list">
         {showTodo.map((todo, ind) => (
-          <>
+          <div>
             <p key={ind}>{todo}</p>
-            <button onClick={() => deleteTodo(ind)}>Click me</button>
-          </>
+
+            <button onClick={() => deleteTodo(ind)}>Delete</button>
+            <button onClick={updateTodo}>Update</button>
+          </div>
         ))}
       </div>
+
       {showTodo.length > 1 ? (
         <button onClick={removeAllTodos}>Remove All</button>
       ) : null}
