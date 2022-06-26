@@ -3,34 +3,55 @@ import TodoList from "./TodoList";
 import "./todoList.css";
 import FlipMove from "react-flip-move";
 
+// get all items from local storage
 const getLocalItems = () => {
   const todos = localStorage.getItem("todos");
   console.log("local storage todos", todos);
 
-  if(todos) {
-    return JSON.parse(localStorage.getItem("todos"))
+  if (todos) {
+    return JSON.parse(localStorage.getItem("todos"));
   } else {
-    return []
+    return [];
   }
-}
+};
 
 function TodoForm() {
   const [inputData, setInputData] = useState("");
   const [showTodo, setShowTodo] = useState(getLocalItems());
+  const [toggleSubmit, setToggleSubmit] = useState(false);
+  const [isEditItem, setIsEditItem] = useState(null);
 
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (!inputData) return null;
-    else {
-      setShowTodo([...showTodo, inputData]);
+    if (!inputData) return alert("Please write something");
+    else if (inputData && toggleSubmit) {
+      setShowTodo(
+        showTodo.map((item) => {
+          if (item.id === isEditItem) {
+            return { ...item, name: inputData };
+          }
+          return item;
+        })
+      );
+
+      setInputData("");
+      setToggleSubmit(false);
+      setIsEditItem(null);
+      
+    } else {
+      const allInputData = {
+        id: new Date().getTime().toString(),
+        name: inputData,
+      };
+      setShowTodo([...showTodo, allInputData]);
       setInputData("");
     }
   };
 
   // function to delete todo
-  const deleteTodo = (id) => {
-    const updatedItems = showTodo.filter((item, ind) => id !== ind);
+  const deleteTodo = (index) => {
+    const updatedItems = showTodo.filter((item) => index !== item.id);
     console.log("these are updated items", updatedItems);
 
     setShowTodo(updatedItems);
@@ -42,8 +63,16 @@ function TodoForm() {
   };
 
   // function to update todo
-  const updateTodo = (e) => {
-    console.log(e.target.value);
+  const editTodo = (id) => {
+    let newEditItem = showTodo.find((item) => {
+      return item.id === id;
+    });
+
+    setToggleSubmit(true);
+
+    setInputData(newEditItem.name);
+
+    setIsEditItem(id);
   };
 
   // add todos to local storage
@@ -60,17 +89,17 @@ function TodoForm() {
           onChange={(e) => setInputData(e.target.value)}
           value={inputData}
         />
-        <button type="submit">Add Todo</button>
+        {toggleSubmit ? <button>Update</button> : <button>Add Todo</button>}
       </form>
 
       {/* returning filtered items */}
       <div className="todo__list">
-        {showTodo.map((todo, ind) => (
+        {showTodo.map((todo) => (
           <div>
-            <p key={ind}>{todo}</p>
+            <p key={todo.id}>{todo.name}</p>
 
-            <button onClick={() => deleteTodo(ind)}>Delete</button>
-            <button onClick={updateTodo}>Update</button>
+            <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+            <button onClick={() => editTodo(todo.id)}>Edit</button>
           </div>
         ))}
       </div>
