@@ -1,23 +1,14 @@
-// import React, { useState } from "react";
+import React, { useState } from "react";
 
-// function Todo({ todo, showTodo }) {
-//   const [updatedTodos, setUpdatedTodos] = useState([]);
-//   // console.log("this is updatedtodos", updatedTodos);
+function Todo({ name, id, deleteTodo, editTodo }) {
+  return (
+    <div className="todo__elem">
+      <p>{name}</p>
 
-//   const deleteTodo = () => {
-//     const filteredTodos = showTodo.filter((item, ind) => ind !== item);
-//     setUpdatedTodos(filteredTodos);
-//     console.log("filtered todos", filteredTodos);
-//   };
+      <button onClick={() => deleteTodo(id)}>Delete</button>
+      <button onClick={() => editTodo(id)}>Edit</button>
+    </div>
+  );
+}
 
-//   return (
-//     <div>
-//       <ul>
-//         <li>{todo}</li>
-//       </ul>
-//       <button onClick={deleteTodo}>Delete</button>
-//     </div>
-//   );
-// }
-
-// export default Todo;
+export default Todo;

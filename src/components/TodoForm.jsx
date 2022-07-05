@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import TodoList from "./TodoList";
 import "./todoList.css";
 import FlipMove from "react-flip-move";
+import Todo from "./Todo";
 
 // get all items from local storage
 const getLocalItems = () => {
@@ -38,7 +39,6 @@ function TodoForm() {
       setInputData("");
       setToggleSubmit(false);
       setIsEditItem(null);
-      
     } else {
       const allInputData = {
         id: new Date().getTime().toString(),
@@ -70,7 +70,7 @@ function TodoForm() {
 
     setToggleSubmit(true);
 
-    setInputData(newEditItem.name);
+    setInputData(newEditItem.name + " ");
 
     setIsEditItem(id);
   };
@@ -81,33 +81,35 @@ function TodoForm() {
   }, [showTodo]);
 
   return (
-    <div className="form">
-      <form onSubmit={onSubmit}>
-        <input
-          type="text"
-          placeholder="Add Todo..."
-          onChange={(e) => setInputData(e.target.value)}
-          value={inputData}
-        />
-        {toggleSubmit ? <button>Update</button> : <button>Add Todo</button>}
-      </form>
+    <>
+      <h2 className="header">Task Manager</h2>
+      <div className="form">
+        <form onSubmit={onSubmit}>
+          <input
+            type="text"
+            placeholder="Add Todo..."
+            onChange={(e) => setInputData(e.target.value)}
+            value={inputData}
+          />
+          {toggleSubmit ? <button>Update</button> : <button>Add Todo</button>}
+        </form>
 
-      {/* returning filtered items */}
-      <div className="todo__list">
-        {showTodo.map((todo) => (
-          <div>
-            <p key={todo.id}>{todo.name}</p>
+        {/* returning filtered items */}
+        <div className="todo__list">
+          {showTodo.map((todo) => (
+            
+             <Todo name={todo.name} id={todo.id} key={todo.id} deleteTodo={deleteTodo} editTodo={editTodo} />
+            
+          ))}
+        </div>
 
-            <button onClick={() => deleteTodo(todo.id)}>Delete</button>
-            <button onClick={() => editTodo(todo.id)}>Edit</button>
-          </div>
-        ))}
+        {showTodo.length > 1 ? (
+          <button onClick={removeAllTodos} className="remove-button">
+            Remove All
+          </button>
+        ) : null}
       </div>
-
-      {showTodo.length > 1 ? (
-        <button onClick={removeAllTodos}>Remove All</button>
-      ) : null}
-    </div>
+    </>
   );
 }
 

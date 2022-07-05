@@ -1,36 +1,86 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background-color: #3c1779;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 1em;
+  font-size: 2.3em;
+  letter-spacing: 1.3px;
+  word-spacing: 5px;
+  color: whitesmoke;
+  text-shadow: 1px 1px 3px black;
+}
+
 .form {
-  background-color: rgb(195, 76, 76);
-  padding: 2em;
+  background-color: rgb(23, 22, 22);
+  box-shadow: 1px 1px 3px rgb(0, 0, 0);
+  padding: 4em;
   border-radius: 10px;
+  min-height: 400px;
+  min-width: 600px;
+}
+
+.form form {
+  text-align: center;
+}
+
+.todo__elem {
+  display: flex;
+  align-items: center;
+  background-color: rgb(164, 152, 152);
+  padding: 1em;
+  border: 1px solid rgb(205, 199, 199);
+  border-radius: 5px;
+  margin-bottom: 6px;
+  margin-top: 2em;
+}
+
+.todo__elem button {
+  margin-right: 1em;
 }
 
 p {
-  background-color: rgb(177, 163, 163);
-  width: 30rem;
-  border-radius: 5px;
-  padding: 1em;
-  margin-bottom: 6px;
+  width: 25rem;
   color: whitesmoke;
   font-size: 1.1em;
   font-weight: 500;
 }
 
+
+
 button {
-  background-image: linear-gradient( 135deg, #F97794 10%, #623AA2 100%);
+  background-image: linear-gradient(135deg, #f97794 10%, #623aa2 100%);
   border: none;
   padding: 12px 24px;
   border-radius: 5px;
   color: whitesmoke;
   cursor: pointer;
+  letter-spacing: 1.3px;
+  font-weight: 600;
+}
+
+.remove-button {
+  text-align: center;
+  width: 100%;
+  margin-top: 2em;
 }
 
 input {
-    border: none;
-    padding: 12px 24px;
-    border-radius: 5px;
-    margin-right: 1em;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 5px;
+  margin-right: 1em;
 }
 
 input:focus {
-    outline: none;
+  outline: none;
 }
